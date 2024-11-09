@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Candidate List</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-left-color: #3b82f6;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .shortlisted-card {
+            transition: transform 0.2s, box-shadow 0.2s;
+            border-left: 4px solid #3b82f6;
+            background-color: #ffffff;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        .shortlisted-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25em 0.75em;
+            font-size: 1em;
+            font-weight: 700;
+            color: #fff;
+            background-color: #3b82f6;
+            border-radius: 9999px;
+        }
+
+        .details-summary {
+            cursor: pointer;
+            color: #2563eb;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+
+        .details-summary:hover {
+            color: #1d4ed8;
+            text-decoration: underline;
+        }
+
+        .candidate-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .candidate-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .candidate-info h3 {
+            font-size: 1.75rem;
+            font-weight: bold;
+            color: #1f2937;
+        }
+
+        .candidate-info p {
+            font-size: 1rem;
+            color: #4b5563;
+        }
+
+        .score-badge {
+            display: flex;
+            align-items: center;
+        }
+
+        .score-circle {
+            width: 60px;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            color: #fff;
+            font-size: 1.5rem;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .score-badge .badge {
+            margin-left: 0.5rem;
+        }
+
+        .icon {
+            margin-right: 0.5rem;
+        }
+
+        .search-input {
+            border-radius: 0.375rem;
+            padding: 0.5rem 1rem;
+            border: 1px solid #d1d5db;
+            width: 100%;
+        }
+
+        .search-input:focus {
+            border-color: #3b82f6;
+            outline: none;
+        }
+
+        .footer {
+            margin-top: 4rem;
+            padding: 2rem;
+            background-color: #f3f4f6;
+            text-align: center;
+        }
+
+        .tag {
+            display: inline-block;
+            background-color: #e2e8f0;
+            color: #2587f0;
+            padding: 0.25rem 0.5rem;
+            margin: 0.25rem;
+            border-radius: 0.25rem;
+            font-size: 0.875rem;
+        }
+
+        .candidate-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-left: 4px solid #3b82f6;
+            background-color: #ffffff;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .candidate-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .candidate-header .score-badge {
+            display: flex;
+            align-items: center;
+        }
+
+        .candidate-header .score-badge .badge {
+            margin-left: 0.5rem;
+        }
+
+        .candidate-header .icon {
+            margin-right: 0.5rem;
+        }
+
+        .details-section {
+            background-color: #f3f4f6;
+            border-radius: 8px;
+            padding: 1rem;
+            transition: background-color 0.2s;
+        }
+
+        .details-section:hover {
+            background-color: #e5e7eb;
+        }
+
+        .details-content p {
+            margin-bottom: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .candidate-card {
+                padding: 1rem;
+            }
+
+            .candidate-info h3 {
+                font-size: 1.5rem;
+            }
+
+            .candidate-info p {
+                font-size: 0.875rem;
+            }
+
+            .details-section {
+                padding: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <!-- Navigation Bar -->
+    <nav class="bg-blue-600 text-white shadow-lg">
+        <div class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <div class="text-xl font-semibold">
+                <a class="text-white text-xl font-bold hover:text-gray-300" href="#">Hiring Management System</a>
+            </div>
+            <div class="hidden md:flex md:items-center">
+                <a class="text-white text-sm font-semibold hover:text-gray-300 mx-4" href="index.html">Home</a>
+                <a class="text-white text-sm font-semibold hover:text-gray-300 mx-4" href="manage.html">Jobs</a>
+                <a class="text-white text-sm font-semibold hover:text-gray-300 mx-4" href="all_applicants.html">Applicants</a>
+                <a class="text-white text-sm font-semibold hover:text-gray-300 mx-4" href="shortlisted_candidates.html">Short Listed</a>
+            </div>
+            <div class="flex md:hidden">
+                <button type="button" id="menu-btn" class="text-white hover:text-gray-300 focus:outline-none focus:text-gray-300" aria-label="toggle menu">
+                    <svg viewBox="0 0 24 24" class="h-6 w-6 fill-current">
+                        <path fill-rule="evenodd" d="M4 5h16v2H4V5zm0 6h16v2H4v-2zm0 6h16v2H4v-2z"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <div class="hidden md:hidden" id="menu">
+            <a class="block text-sm font-semibold text-white hover:text-gray-300 px-4 py-2" href="index.html">Home</a>
+            <a class="block text-sm font-semibold text-white hover:text-gray-300 px-4 py-2" href="manage.html">Jobs</a>
+            <a class="block text-sm font-semibold text-white hover:text-gray-300 px-4 py-2" href="all_applicants.html">Applicants</a>
+            <a class="block text-sm font-semibold text-white hover:text-gray-300 px-4 py-2" href="shortlisted_candidates.html">Short Listed</a>
+        </div>
+    </nav>
+
+    <div class="container mx-auto p-8">
+        <div class="bg-white p-6 rounded-lg shadow-lg">
+            <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">Candidates for Job</h1>
+        
+            <!-- Search bar -->
+            <div class="mb-4">
+                <input type="text" id="search-bar" placeholder="Search applicants..." class="search-input">
+            </div>
+            <div class="candidate-list mb-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="candidate-list">
+                <!-- Candidate items will be appended here dynamically -->
+            </div>
+            <button id="shortlist-button" class="w-full bg-blue-600 text-white p-2 rounded-md hover:bg-blue-700 transition duration-200">Shortlist Candidates</button>
+            <div id="processing-bar" class="hidden mt-4 flex flex-col justify-center items-center">
+                <div class="spinner"></div>
+                <div class="mt-2 text-gray-700">Processing...</div>
+            </div>
+            <div id="shortlisted-candidates" class="hidden mt-6">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">Shortlisted Candidates</h2>
+                <ul id="shortlisted-candidate-list" class="space-y-4">
+                    <!-- Shortlisted candidate items will be appended here dynamically -->
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p class="text-gray-600">&copy; 2024 Hiring Management System. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const jobId = params.get('job_id');
+    
+            // Fetch candidates for the selected job
+            fetchWithToken(`http://127.0.0.1:8002/api/resumes/by_job/?job_id=${jobId}`)
+                .then(response => response.json())
+                .then(data => {
+                    const candidateList = document.getElementById('candidate-list');
+                    candidateList.innerHTML = '';  // Clear any existing content
+                    data.forEach(candidate => {
+                        const candidateItem = document.createElement('div');
+                        candidateItem.className = 'candidate-card p-6 rounded-md shadow-lg';
+                        candidateItem.innerHTML = `
+                            <div class="candidate-header mb-4">
+                                <div class="candidate-info">
+                                    <h3 class="text-2xl font-bold text-gray-800">${candidate.name}</h3>
+                                    <p class="text-gray-600">${candidate.email}</p>
+                                </div>
+                            </div>
+                        `;
+                        candidateList.appendChild(candidateItem);
+                    });
+    
+                    // Add event listener for shortlist button
+                    document.getElementById('shortlist-button').addEventListener('click', () => {
+                        const numCandidates = prompt('Enter the number of candidates to shortlist:');
+                        if (!numCandidates || isNaN(numCandidates) || numCandidates <= 0) {
+                            alert('Please enter a valid number of candidates.');
+                            return;
+                        }
+    
+                        // Show the processing bar
+                        document.getElementById('processing-bar').classList.remove('hidden');
+    
+                        fetchWithToken('http://127.0.0.1:8002/api/shortlist-candidates/', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ job_id: jobId, num_candidates: numCandidates })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            // Hide the processing bar
+                            document.getElementById('processing-bar').classList.add('hidden');
+    
+                            // Display shortlisted candidates
+                            const shortlistedCandidates = document.getElementById('shortlisted-candidates');
+                            const shortlistedCandidateList = document.getElementById('shortlisted-candidate-list');
+                            shortlistedCandidateList.innerHTML = '';  // Clear any existing content
+                            data.forEach(candidate => {
+                                const candidateItem = document.createElement('li');
+                                candidateItem.className = 'candidate-card shortlisted-card p-6 rounded-md shadow-lg';
+                                candidateItem.innerHTML = `
+                                    <div class="candidate-header mb-4">
+                                        <div class="candidate-info">
+                                            <h3 class="text-2xl font-bold text-gray-800">${candidate.name}</h3>
+                                            <p class="text-gray-600">${candidate.email}</p>
+                                        </div>
+                                        <div class="score-badge">
+                                            <div class="score-circle">${candidate.score}</div>
+                                        </div>
+                                    </div>
+                                    <p class="text-gray-600 mb-2"><strong>Explanation:</strong> ${candidate.explanation || 'N/A'}</p>
+                                    <details class="details-section bg-gray-100 p-4 rounded-md">
+                                        <summary class="details-summary">View Details</summary>
+                                        <div class="details-content mt-2">
+                                            <p><strong>Education:</strong> ${formatEducation(candidate.education)}</p>
+                                            <p><strong>Experience:</strong> ${formatExperience(candidate.experience)}</p>
+                                            <p><strong>Skills:</strong> ${formatSkills(candidate.skills)}</p>
+                                            <p><strong>Projects:</strong> ${formatProjects(candidate.projects)}</p>
+                                        </div>
+                                    </details>
+                                `;
+                                shortlistedCandidateList.appendChild(candidateItem);
+                            });
+    
+                            // Show the shortlisted candidates section
+                            shortlistedCandidates.classList.remove('hidden');
+                        })
+                        .catch(error => {
+                            console.error('Error shortlisting candidates:', error);
+                            alert('Failed to shortlist candidates: ' + error.message);
+                        });
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching candidates:', error);
+                });
+    
+            // Search functionality
+            document.getElementById('search-bar').addEventListener('input', (event) => {
+                const searchTerm = event.target.value.toLowerCase();
+                const candidateItems = document.querySelectorAll('#candidate-list .candidate-card');
+                candidateItems.forEach(item => {
+                    const candidateName = item.querySelector('.candidate-info h3').textContent.toLowerCase();
+                    if (candidateName.includes(searchTerm)) {
+                        item.classList.remove('hidden');
+                    } else {
+                        item.classList.add('hidden');
+                    }
+                });
+            });
+    
+            document.getElementById('menu-btn').addEventListener('click', function() {
+                const menu = document.getElementById('menu');
+                menu.classList.toggle('hidden');
+            });
+    
+            async function fetchWithToken(url, options = {}) {
+                let accessToken = localStorage.getItem('access_token');
+                const refreshToken = localStorage.getItem('refresh_token');
+    
+                options.headers = {
+                    ...options.headers,
+                    'Authorization': `Bearer ${accessToken}`,
+                };
+    
+                let response = await fetch(url, options);
+                if (response.status === 401) {
+                    // Access token expired, try to refresh it
+                    const refreshResponse = await fetch('http://localhost:8003/api/auth/token/refresh/', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ refresh: refreshToken }),
+                    });
+    
+                    if (refreshResponse.ok) {
+                        const refreshData = await refreshResponse.json();
+                        localStorage.setItem('access_token', refreshData.access);
+                        accessToken = refreshData.access;
+    
+                        // Retry the original request with new access token
+                        options.headers['Authorization'] = `Bearer ${accessToken}`;
+                        response = await fetch(url, options);
+                    } else {
+                        // Refresh token is also expired or invalid
+                        alert('Session expired. Please log in again.');
+                        localStorage.removeItem('access_token');
+                        localStorage.removeItem('refresh_token');
+                        window.location.href = 'login.html';
+                        return;
+                    }
+                }
+    
+                return response;
+            }
+        });
+    
+        function formatEducation(education) {
+            if (!education || !Array.isArray(education)) return 'N/A';
+            return education.map(edu => `${edu.degree} specializing in ${edu.field} from ${edu.institution}`).join(', ');
+        }
+    
+        function formatExperience(experience) {
+            if (!experience || !Array.isArray(experience)) return 'N/A';
+            return experience.map(exp => `${exp.position} at ${exp.company} (${exp.duration})`).join(', ');
+        }
+    
+        function formatSkills(skills) {
+            if (!skills || !Array.isArray(skills)) return 'N/A';
+            return skills.map(skill => `<span class="tag">${skill}</span>`).join(' ');
+        }
+    
+        function formatProjects(projects) {
+            if (!projects || !Array.isArray(projects)) return 'N/A';
+            return projects.map(proj => `${proj.name}: ${proj.contribution} (Tech: ${proj.technology.join(', ')})`).join(', ');
+        }
+    </script>
+    
+</body>
+</html>

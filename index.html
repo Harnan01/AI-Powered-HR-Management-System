@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Admin Dashboard</title>
+    <!-- plugins:css -->
+    <link rel="stylesheet" href="assets/vendors/feather/feather.css">
+    <link rel="stylesheet" href="assets/vendors/mdi/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="assets/vendors/ti-icons/css/themify-icons.css">
+    <link rel="stylesheet" href="assets/vendors/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="assets/vendors/typicons/typicons.css">
+    <link rel="stylesheet" href="assets/vendors/simple-line-icons/css/simple-line-icons.css">
+    <link rel="stylesheet" href="assets/vendors/css/vendor.bundle.base.css">
+    <link rel="stylesheet" href="assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css">
+    <!-- endinject -->
+    <!-- inject:css -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <!-- endinject -->
+    <style>
+        .sidebar .nav-item .nav-link {
+            white-space: normal;
+            word-wrap: break-word;
+        }
+
+        .sidebar {
+            width: 250px; /* Adjust this width as needed */
+        }
+
+        .navbar-brand-wrapper {
+            width: 250px; /* Adjust this width as needed */
+        }
+    </style>
+</head>
+<body class="with-welcome-text">
+    <div class="container-scroller">
+        <!-- partial:partials/_navbar.html -->
+        <nav class="navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex align-items-top flex-row">
+            <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-start">
+                <div class="me-3">
+                    <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-bs-toggle="minimize">
+                        <span class="icon-menu"></span>
+                    </button>
+                </div>
+                <div>
+                    <a class="navbar-brand brand-logo" href="index.html">
+                        <img src="assets/images/logo.png" alt="logo" />
+                    </a>
+                    <a class="navbar-brand brand-logo-mini" href="index.html">
+                        <img src="assets/images/logo.png" alt="logo" />
+                    </a>
+                </div>
+            </div>
+            <div class="navbar-menu-wrapper d-flex align-items-top">
+                <ul class="navbar-nav">
+                    <li class="nav-item fw-semibold d-none d-lg-block ms-0">
+                        <h1 class="welcome-text">Good Morning, <span class="text-black fw-bold">Anu</span></h1>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ms-auto">
+                    <!-- Additional navbar items here -->
+                    <li class="nav-item d-none d-lg-block">
+                      <div id="datepicker-popup" class="input-group date datepicker navbar-date-picker">
+                        <span class="input-group-addon input-group-prepend border-right">
+                          <span class="icon-calendar input-group-text calendar-icon"></span>
+                        </span>
+                        <input type="text" class="form-control">
+                      </div>
+                    </li>
+                    <li class="nav-item">
+                      <form class="search-form" action="#">
+                        <i class="icon-search"></i>
+                        <input type="search" class="form-control" placeholder="Search Here" title="Search here">
+                      </form>
+                    </li>
+                    <li class="nav-item dropdown d-none d-lg-block user-dropdown">
+                      <a class="nav-link" id="UserDropdown" href="#" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img class="img-xs rounded-circle" src="assets/images/hr.jpeg" alt="Profile image"> </a>
+                      <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
+                        <div class="dropdown-header text-center">
+                          <img class="img-md rounded-circle" src="assets/images/hr.jpeg" alt="Profile image">
+                          <p class="mb-1 mt-3 fw-semibold">Anuja</p>
+                          <p class="fw-light text-muted mb-0">anuthileep20@gmail.com</p>
+                        </div>
+                        <a class="dropdown-item"><i class="dropdown-item-icon mdi mdi-account-outline text-primary me-2"></i> My Profile</a>
+                        <a class="dropdown-item"><i class="dropdown-item-icon mdi mdi-message-text-outline text-primary me-2"></i> Messages</a>
+                        <a class="dropdown-item" onclick="logout()"><i class="dropdown-item-icon mdi mdi-power text-primary me-2"></i>Sign Out</a>
+                      </div>
+                    </li>
+                  </ul>
+                </ul>
+                <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-bs-toggle="offcanvas">
+                    <span class="mdi mdi-menu"></span>
+                </button>
+            </div>
+        </nav>
+        <!-- partial -->
+        <div class="container-fluid page-body-wrapper">
+            <!-- partial:partials/_sidebar.html -->
+            <nav class="sidebar sidebar-offcanvas" id="sidebar">
+                <ul class="nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="dashboard.html">
+                            <i class="mdi mdi-grid-large menu-icon"></i>
+                            <span class="menu-title">Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-item nav-category">Overview</li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="collapse" href="#job-posting" aria-expanded="false" aria-controls="job-posting">
+                            <i class="menu-icon mdi mdi-floor-plan"></i>
+                            <span class="menu-title">Job Posting</span>
+                            <i class="menu-arrow"></i>
+                        </a>
+                        <div class="collapse" id="job-posting">
+                            <ul class="nav flex-column sub-menu">
+                                <li class="nav-item"> <a class="nav-link" href="job_posting.html">Create New Job Posting</a></li>
+                                <li class="nav-item"> <a class="nav-link" href="manage.html">Manage Job Posting</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="collapse" href="#applicant-management" aria-expanded="false" aria-controls="applicant-management">
+                            <i class="menu-icon mdi mdi-card-text-outline"></i>
+                            <span class="menu-title">Applicant Management</span>
+                            <i class="menu-arrow"></i>
+                        </a>
+                        <div class="collapse" id="applicant-management">
+                            <ul class="nav flex-column sub-menu">
+                                <li class="nav-item"><a class="nav-link" href="all_applicants.html">All Applicants</a></li>
+                                <li class="nav-item"><a class="nav-link" href="job_selection_for_shortlistedAplicant.html">Short Listed Applicants</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="collapse" href="#interview-management" aria-expanded="false" aria-controls="interview-management">
+                            <i class="menu-icon mdi mdi-chart-line"></i>
+                            <span class="menu-title">Interview Management</span>
+                            <i class="menu-arrow"></i>
+                        </a>
+                        <div class="collapse" id="interview-management">
+                            <ul class="nav flex-column sub-menu">
+                                <li class="nav-item"> <a class="nav-link" href="interview.html">Schedule Interview</a></li>
+                                <li class="nav-item"> <a class="nav-link" href="interview_calendar.html">Interview Calendar</a></li>
+                                <li class="nav-item"> <a class="nav-link" href="send_interview_call.html">Send Interview Calls</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="job_selection_HR.html">
+                            <i class="menu-icon mdi mdi-account-multiple-outline"></i>
+                            <span class="menu-title">Shortlist Candidates</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="collapse" href="#settings" aria-expanded="false" aria-controls="settings">
+                            <i class="menu-icon mdi mdi-settings"></i>
+                            <span class="menu-title">Settings</span>
+                            <i class="menu-arrow"></i>
+                        </a>
+                        <div class="collapse" id="settings">
+                            <ul class="nav flex-column sub-menu">
+                                <li class="nav-item"> <a class="nav-link" href="#">Account Settings</a></li>
+                                <li class="nav-item"> <a class="nav-link" href="#">Notification Settings</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+            <!-- partial -->
+            <div class="main-panel">
+                <div class="content-wrapper">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="home-tab">
+                                <div class="d-sm-flex align-items-center justify-content-between border-bottom">
+                                    <ul class="nav nav-tabs" role="tablist">
+                                        <li class="nav-item">
+                                            <a class="nav-link active ps-0" id="home-tab" data-bs-toggle="tab" href="#overview" role="tab" aria-controls="overview" aria-selected="true">Overview</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="#audiences" role="tab" aria-selected="false">Total Applicants</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="contact-tab" data-bs-toggle="tab" href="#demographics" role="tab" aria-selected="false">New Applications</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link border-0" id="more-tab" data-bs-toggle="tab" href="#more" role="tab" aria-selected="false">Interviews Scheduled</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="tab-content">
+                                    <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="home-tab">
+                                        <div class="row">
+                                            <div class="col-lg-8 d-flex flex-column">
+                                                <div class="row flex-grow">
+                                                    <div class="col-12 grid-margin stretch-card">
+                                                        <div class="card card-rounded">
+                                                            <div class="card-body">
+                                                                <div class="d-sm-flex justify-content-between align-items-start">
+                                                                    <div>
+                                                                        <h4 class="card-title card-title-dash">Applicants Statistics</h4>
+                                                                        <h5 class="card-subtitle card-subtitle-dash"></h5>
+                                                                    </div>
+                                                                    <div id="performanceLine-legend"></div>
+                                                                </div>
+                                                                <div class="chartjs-wrapper mt-4">
+                                                                    <canvas id="performanceLine" width="400"></canvas>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4 d-flex flex-column">
+                                                <div class="row flex-grow">
+                                                    <div class="col-md-6 col-lg-12 grid-margin stretch-card">
+                                                        <div class="card bg-primary card-rounded">
+                                                            <div class="card-body pb-0">
+                                                                <h4 class="card-title card-title-dash text-white mb-4">Interview Statistics</h4>
+                                                                <div class="row">
+                                                                    <div class="col-sm-4">
+                                                                        <p class="status-summary-light-white mb-1"></p>
+                                                                        <h2 class="text-info"></h2>
+                                                                    </div>
+                                                                    <div class="col-sm-8">
+                                                                        <div class="status-summary-chart-wrapper pb-4">
+                                                                            <canvas id="status-summary"></canvas>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-8 d-flex flex-column">
+                                                <div class="row flex-grow">
+                                                    <div class="col-12 grid-margin stretch-card">
+                                                        <div class="card card-rounded">
+                                                            <div class="card-body">
+                                                                <div class="d-sm-flex justify-content-between align-items-start">
+                                                                    <div>
+                                                                        <h4 class="card-title card-title-dash">Job Post Performance</h4>
+                                                                        <p class="card-subtitle card-subtitle-dash"></p>
+                                                                    </div>
+                                                                    <div>
+                                                                        <div class="dropdown">
+                                                                            <button class="btn btn-light dropdown-toggle toggle-dark btn-lg mb-0 me-0" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> This month </button>
+                                                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                                                                                <h6 class="dropdown-header">Last month</h6>
+                                                                                <a class="dropdown-item" href="#">Last week</a>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="d-sm-flex align-items-center mt-1 justify-content-between">
+                                                                    <div class="d-sm-flex align-items-center mt-4 justify-content-between">
+                                                                        <h2 class="me-2 fw-bold"></h2>
+                                                                        <h4 class="me-2"></h4>
+                                                                        <h4 class="text-success"></h4>
+                                                                    </div>
+                                                                    <div class="me-3">
+                                                                        <div id="marketingOverview-legend"></div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="chartjs-bar-wrapper mt-3">
+                                                                    <canvas id="marketingOverview"></canvas>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Additional tab content can go here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- main-panel ends -->
+            </div>
+        </div>
+        <!-- page-body-wrapper ends -->
+    </div>
+    
+    <script src="assets/vendors/js/vendor.bundle.base.js"></script>
+    <script src="assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>
+    
+    <script src="assets/vendors/chart.js/chart.umd.js"></script>
+    <script src="assets/vendors/progressbar.js/progressbar.min.js"></script>
+    <script>
+        // Check for access token in local storage and log it
+        document.addEventListener("DOMContentLoaded", function() {
+            const accessToken = localStorage.getItem('access_token');
+            console.log('Access Token:', accessToken);
+            if (!accessToken) {
+                window.location.href = 'login.html';
+            }
+        });
+    
+        // Function to logout and clear local storage
+        function logout() {
+            localStorage.removeItem('access_token');
+            localStorage.removeItem('refresh_token');
+            window.location.href = 'login.html';
+        }
+    </script>
+    
+</body>
+</html>

@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Applicant Tracking System</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-left-color: #3b82f6;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .hover-effect:hover {
+            background-color: #f3f4f6;
+            transform: translateY(-2px);
+        }
+
+        .transition-all {
+            transition: all 0.3s ease-in-out;
+        }
+
+        .chart-container {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .footer {
+            margin-top: 4rem;
+            padding: 2rem;
+            background-color: #f3f4f6;
+            text-align: center;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <!-- Navigation Bar -->
+    <nav class="bg-blue-600 text-white shadow-lg">
+        <div class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <div class="text-xl font-semibold">
+                <a class="text-white text-xl font-bold hover:text-gray-300" href="#">Hiring Management System</a>
+            </div>
+            <div class="hidden md:flex md:items-center">
+                <a class="text-white text-sm font-semibold hover:text-gray-300 mx-4" href="index.html">Home</a>
+                <a class="text-white text-sm font-semibold hover:text-gray-300 mx-4" href="manage.html">Jobs</a>
+                <a class="text-white text-sm font-semibold hover:text-gray-300 mx-4" href="all_applicants.html">Applicants</a>
+                <a class="text-white text-sm font-semibold hover:text-gray-300 mx-4" href="shortlisted_candidates.html">Short Listed</a>
+            </div>
+            <div class="flex md:hidden">
+                <button type="button" id="menu-btn" class="text-white hover:text-gray-300 focus:outline-none focus:text-gray-300" aria-label="toggle menu">
+                    <svg viewBox="0 0 24 24" class="h-6 w-6 fill-current">
+                        <path fill-rule="evenodd" d="M4 5h16v2H4V5zm0 6h16v2H4v-2zm0 6h16v2H4v-2z"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <div class="hidden md:hidden" id="menu">
+            <a class="block text-sm font-semibold text-white hover:text-gray-300 px-4 py-2" href="index.html">Home</a>
+            <a class="block text-sm font-semibold text-white hover:text-gray-300 px-4 py-2" href="manage.html">Jobs</a>
+            <a class="block text-sm font-semibold text-white hover:text-gray-300 px-4 py-2" href="all_applicants.html">Applicants</a>
+            <a class="block text-sm font-semibold text-white hover:text-gray-300 px-4 py-2" href="shortlisted_candidates.html">Short Listed</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mx-auto p-8">
+        <div class="bg-white p-6 rounded-lg shadow-lg mb-6">
+            <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">All Applicants</h1>
+            
+            <!-- Search bar -->
+            <div class="mb-4">
+                <input type="text" id="search-bar" placeholder="Search applicants..." class="w-full p-2 border rounded-md">
+            </div>
+            
+            <!-- Table Container -->
+            <div class="overflow-x-auto mb-6">
+                <table class="min-w-full bg-white shadow-md rounded-lg">
+                    <thead class="bg-blue-600 text-white">
+                        <tr>
+                            <th class="py-3 px-6 text-left">Name</th>
+                            <th class="py-3 px-6 text-left">Email</th>
+                            <th class="py-3 px-6 text-left">Applied Job</th>
+                            <th class="py-3 px-6 text-left">Resume</th>
+                        </tr>
+                    </thead>
+                    <tbody id="applicants-table-body" class="text-gray-700">
+                        <!-- Applicants will be appended here by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Data Visualization -->
+            <div class="chart-container mb-6">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4 text-center">Applicant Data Overview</h2>
+                <canvas id="applicant-chart"></canvas>
+            </div>
+
+            <div id="processing-bar" class="hidden mt-4 flex flex-col justify-center items-center">
+                <div class="spinner"></div>
+                <div class="mt-2 text-gray-700">Processing...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p class="text-gray-600">&copy; 2024 Hiring Management System. All rights reserved.</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        fetchApplicants();
+    });
+
+    async function fetchWithToken(url, options = {}) {
+        let accessToken = localStorage.getItem('access_token');
+        const refreshToken = localStorage.getItem('refresh_token');
+
+        options.headers = {
+            ...options.headers,
+            'Authorization': `Bearer ${accessToken}`,
+        };
+
+        let response = await fetch(url, options);
+        console.log(response)
+        if (response.status === 401) {
+            // Access token expired, try to refresh it
+            const refreshResponse = await fetch('http://localhost:8003/api/auth/token/refresh/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ refresh: refreshToken }),
+            });
+
+            if (refreshResponse.ok) {
+                const refreshData = await refreshResponse.json();
+                localStorage.setItem('access_token', refreshData.access);
+                accessToken = refreshData.access;
+
+                // Retry the original request with new access token
+                options.headers['Authorization'] = `Bearer ${accessToken}`;
+                response = await fetch(url, options);
+            } else {
+                // Refresh token is also expired or invalid
+                alert('Session expired. Please log in again.');
+                localStorage.removeItem('access_token');
+                localStorage.removeItem('refresh_token');
+                window.location.href = 'login.html';
+                return;
+            }
+        }
+
+        return response;
+    }
+
+    function fetchApplicants() {
+        document.getElementById('processing-bar').classList.remove('hidden');
+
+        const token = localStorage.getItem('access_token');
+        if (!token) {
+            alert('Access token is missing. Please log in.');
+            window.location.href = 'login.html'; // Redirect to login page if token is missing
+            return;
+        }
+
+        fetchWithToken('http://localhost:8002/api/resumes/all_resumes/')
+            .then(response => {
+                document.getElementById('processing-bar').classList.add('hidden');
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                displayApplicants(data);
+                generateChart(data);
+            })
+            .catch(error => {
+                document.getElementById('processing-bar').classList.add('hidden');
+                console.error('Error fetching applicants:', error);
+                alert('Error fetching applicants: ' + error.message);
+            });
+    }
+
+    function displayApplicants(data) {
+        const tableBody = document.getElementById('applicants-table-body');
+        tableBody.innerHTML = '';
+
+        data.forEach(applicant => {
+            const row = document.createElement('tr');
+            row.classList.add('border-b', 'border-gray-200', 'hover-effect', 'transition-all');
+
+            const nameCell = document.createElement('td');
+            nameCell.textContent = applicant.name;
+            nameCell.classList.add('py-4', 'px-6', 'whitespace-nowrap');
+            row.appendChild(nameCell);
+
+            const emailCell = document.createElement('td');
+            emailCell.textContent = applicant.email;
+            emailCell.classList.add('py-4', 'px-6', 'whitespace-nowrap');
+            row.appendChild(emailCell);
+
+            const jobCell = document.createElement('td');
+            jobCell.textContent = applicant.job_name;
+            jobCell.classList.add('py-4', 'px-6', 'whitespace-nowrap');
+            row.appendChild(jobCell);
+
+            const resumeCell = document.createElement('td');
+            resumeCell.classList.add('py-4', 'px-6', 'whitespace-nowrap');
+            const resumeLink = document.createElement('a');
+            resumeLink.href = applicant.file_path;
+            resumeLink.target = '_blank';
+            resumeLink.classList.add('text-blue-500', 'hover:underline');
+            resumeLink.textContent = 'Open Resume';
+            resumeCell.appendChild(resumeLink);
+            row.appendChild(resumeCell);
+
+            tableBody.appendChild(row);
+        });
+
+        const searchBar = document.getElementById('search-bar');
+        searchBar.addEventListener('input', function () {
+            const query = searchBar.value.toLowerCase();
+            const rows = tableBody.querySelectorAll('tr');
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                const name = cells[0].textContent.toLowerCase();
+                const email = cells[1].textContent.toLowerCase();
+                const job = cells[2].textContent.toLowerCase();
+                if (name.includes(query) || email.includes(query) || job.includes(query)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+    }
+
+    function generateChart(data) {
+        const ctx = document.getElementById('applicant-chart').getContext('2d');
+        const jobCount = data.reduce((acc, applicant) => {
+            acc[applicant.job_name] = (acc[applicant.job_name] || 0) + 1;
+            return acc;
+        }, {});
+
+        new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: Object.keys(jobCount),
+                datasets: [{
+                    label: 'Number of Applicants',
+                    data: Object.values(jobCount),
+                    backgroundColor: [
+                        'rgba(59, 130, 246, 0.7)',
+                        'rgba(34, 197, 94, 0.7)',
+                        'rgba(234, 179, 8, 0.7)',
+                        'rgba(239, 68, 68, 0.7)',
+                        'rgba(102, 126, 234, 0.7)',
+                        'rgba(16, 185, 129, 0.7)',
+                    ],
+                    borderColor: [
+                        'rgba(59, 130, 246, 1)',
+                        'rgba(34, 197, 94, 1)',
+                        'rgba(234, 179, 8, 1)',
+                        'rgba(239, 68, 68, 1)',
+                        'rgba(102, 126, 234, 1)',
+                        'rgba(16, 185, 129, 1)',
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const label = context.label || '';
+                                const value = context.raw || 0;
+                                return `${label}: ${value}`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    document.getElementById('menu-btn').addEventListener('click', function() {
+        const menu = document.getElementById('menu');
+        menu.classList.toggle('hidden');
+    });
+</script>
+
+</body>
+</html>
