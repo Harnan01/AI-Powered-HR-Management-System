@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messaging System</title>
+    <link rel="stylesheet" href="styles/messaging.css">
+    <style>body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+    }
+    
+    .messaging {
+        width: 80%;
+        margin: auto;
+        padding: 20px;
+        background: #fff;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    
+    h1, h2 {
+        text-align: center;
+        color: #333;
+    }
+    
+    form {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    label {
+        margin-top: 10px;
+        color: #555;
+    }
+    
+    input, textarea {
+        padding: 10px;
+        margin-top: 5px;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+    }
+    
+    button {
+        margin-top: 20px;
+        padding: 10px;
+        background-color: #5cb85c;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    
+    button:hover {
+        background-color: #4cae4c;
+    }
+    
+    .inbox-outbox {
+        margin-top: 20px;
+    }
+    
+    .messages {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .message {
+        padding: 10px;
+        background: #e7e7e7;
+        margin-top: 10px;
+        border-radius: 5px;
+    }
+    </style>
+</head>
+<body>
+    <div class="messaging">
+        <h1>Messaging System</h1>
+        <div class="send-messages">
+            <h2>Send Messages</h2>
+            <form id="send-messages-form">
+                <label for="recipient">Recipient:</label>
+                <input type="text" id="recipient" name="recipient" required>
+                
+                <label for="message">Message:</label>
+                <textarea id="message" name="message" required></textarea>
+                
+                <button type="submit">Send Message</button>
+            </form>
+        </div>
+        
+    </div>
+</body>
+</html>

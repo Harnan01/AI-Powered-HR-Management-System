@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Applicants Management</title>
+    <link rel="stylesheet" href="styles/applicants.css">
+    <style>body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+    }
+    
+    .applicants {
+        width: 80%;
+        margin: auto;
+        padding: 20px;
+        background: #fff;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    
+    h1, h2 {
+        text-align: center;
+        color: #333;
+    }
+    
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+    
+    thead {
+        background-color: #f4f4f4;
+    }
+    
+    th, td {
+        padding: 10px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+    
+    button {
+        padding: 5px 10px;
+        background-color: #5cb85c;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    
+    button:hover {
+        background-color: #4cae4c
+    </style>
+</head>
+<body>
+    
+        <div class="filter-applicants">
+            <h2>Filter Applicants</h2>
+            <form id="filter-form">
+                <label for="skills">Skills:</label>
+                <input type="text" id="skills" name="skills">
+                
+                <label for="experience">Experience:</label>
+                <input type="text" id="experience" name="experience">
+                
+                <label for="education">Education:</label>
+                <input type="text" id="education" name="education">
+                
+                <label for="keywords">Keywords:</label>
+                <input type="text" id="keywords" name="keywords">
+                
+                <button type="submit">Filter</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

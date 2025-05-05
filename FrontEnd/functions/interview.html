@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interviews Management</title>
+    <link rel="stylesheet" href="styles/interviews.css">
+    <style>body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+    }
+    
+    .interviews {
+        width: 80%;
+        margin: auto;
+        padding: 20px;
+        background: #fff;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    
+    h1, h2 {
+        text-align: center;
+        color: #333;
+    }
+    
+    .schedule-interview, .interview-calendar, .send-interview-calls {
+        margin-top: 20px;
+    }
+    
+    form {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    label {
+        margin-top: 10px;
+        color: #555;
+    }
+    
+    input, textarea {
+        padding: 10px;
+        margin-top: 5px;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+    }
+    
+    button {
+        margin-top: 20px;
+        padding: 10px;
+        background-color: #5cb85c;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    
+    button:hover {
+        background-color: #4cae4c;
+    }
+    
+    #calendar {
+        /* Calendar styling goes here */
+    }
+    </style>
+</head>
+<body>
+    <div class="interviews">
+        <h1>Interviews Management</h1>
+        <div class="schedule-interview">
+            <h2>Schedule Interview</h2>
+            <form id="schedule-interview-form">
+                <label for="interview-date">Date:</label>
+                <input type="date" id="interview-date" name="interview-date" required>
+                
+                <label for="interview-time">Time:</label>
+                <input type="time" id="interview-time" name="interview-time" required>
+                
+                <label for="interview-type">Type of Interview:</label>
+                <input type="text" id="interview-type" name="interview-type" required>
+                
+                <label for="interviewer-details">Interviewer Details:</label>
+                <textarea id="interviewer-details" name="interviewer-details" required></textarea>
+                
+                <button type="submit">Schedule Interview</button>
+            </form>
+        </div>
+        <div class="interview-calendar">
+            <h2>Interview Calendar</h2>
+            <div id="calendar">
+                <!-- Calendar implementation goes here -->
+            </div>
+        </div>
+        <div class="send-interview-calls">
+            <h2>Send Interview Calls</h2>
+            <form id="send-interview-calls-form">
+                <label for="applicant-name">Applicant Name:</label>
+                <input type="text" id="applicant-name" name="applicant-name" required>
+                
+                <label for="message">Message:</label>
+                <textarea id="message" name="message" required></textarea>
+                
+                <button type="submit">Send Message</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

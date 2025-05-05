@@ -1,0 +1,42 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+.dashboard {
+    width: 80%;
+    margin: auto;
+    padding: 20px;
+    background: #fff;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+.stats {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+.stat {
+    background: #e7e7e7;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    width: 20%;
+}
+
+.stat h2 {
+    color: #555;
+}
+
+.stat p {
+    font-size: 1.5em;
+    color: #333;
+}
